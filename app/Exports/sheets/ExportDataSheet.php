@@ -69,6 +69,7 @@ class ExportDataSheet implements FromView, ShouldAutoSize, WithEvents, WithTitle
         $text_align_left = array(
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
                 'wrap' => TRUE
             ]
         );
@@ -136,13 +137,109 @@ class ExportDataSheet implements FromView, ShouldAutoSize, WithEvents, WithTitle
             $format_cell_custom_type_six
         ){
             //==================== Excel Format =========================
+            // $event->sheet
+            //     ->getDelegate()
+            //     ->getStyle('A3:AQ3')
+            //     ->getFill()
+            //     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            //     ->getStartColor()
+            //     ->setARGB('B7D8FF');
+            $excel = \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID;
+            $event->sheet
+            ->getDelegate()
+            ->getStyle('A1')
+            ->getFill()
+            ->setFillType($excel)
+            ->getStartColor()
+            ->setARGB('FFFF66');
+
             $event->sheet
                 ->getDelegate()
-                ->getStyle('A3:AQ3')
+                ->getStyle('A3:C3')
                 ->getFill()
-                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFFF66');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('J3:Q3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FF99CC');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('R3:T3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('9999FF');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('U3:X3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FF99CC');
+                
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('Y3:Z3')
+                ->getFill()
+                ->setFillType($excel)
                 ->getStartColor()
                 ->setARGB('B7D8FF');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('AA3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('66FF66');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('AB3:AC3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('99FFFF');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('AD3:AJ3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFFF99');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('AK3:AL3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFCC99');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('AN3:AO3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFCC99');
+
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('AP3:AQ3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFFF66');
 
             $event->sheet->freezePane('J4');
             $event->sheet->getDelegate()->getStyle('A3:AQ3')->applyFromArray($border);

@@ -146,7 +146,7 @@ function UserManagementChangeUserStatus(){
         },
         successCallback: (response) => {
             if(response['hasError'] == 0){
-                if($("#txtChangeUserStat").val() == 0){
+                if($("#txtUserManagementChangeUserStatus").val() == 0){
                     toastr.success('User activation success!');
                     $("#txtUserManagementChangeUserStatus").val() == 1;
                 }
@@ -181,7 +181,7 @@ function VerifyUser(loginEmployeeId){
             console.log('getUserLogInfo: ', getUserLogInfo);
             if(getUserLogInfo.length > 0){
                 if(getUserLogInfo[0].subsystem_user_info != null){
-                    console.log('SUBSYSTEM USER');
+                    console.log('SUBSYSTEM USER:');
                     $('.button-hide').removeClass('d-none');
                 }
             }        

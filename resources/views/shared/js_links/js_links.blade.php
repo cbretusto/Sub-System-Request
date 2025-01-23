@@ -40,5 +40,6 @@
 
 <script src="@php echo asset("public/js/JsFunction.js?".date("YmdHis")) @endphp"></script>
 <script src="@php echo asset("public/js/UserManagement.js?".date("YmdHis")) @endphp"></script>
+<script src="@php echo asset("public/js/SubSystemPoReceivedCategory.js?".date("YmdHis")) @endphp"></script>
 <script src="@php echo asset("public/js/SubSystemRequest.js?".date("YmdHis")) @endphp"></script>
 <script src="@php echo asset("public/js/Export.js?".date("YmdHis")) @endphp"></script>

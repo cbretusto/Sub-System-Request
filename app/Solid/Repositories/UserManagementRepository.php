@@ -88,6 +88,7 @@ class UserManagementRepository implements UserManagementInterface
     }
 
     public function userCreateUpdate($get_user_id,$request){
+        date_default_timezone_set('Asia/Manila');
         $data = $request->all();
         $validator = Validator::make($data, [
 
@@ -134,6 +135,7 @@ class UserManagementRepository implements UserManagementInterface
     }
 
     public function changeUserStatus($request){
+        date_default_timezone_set('Asia/Manila');
         $data = $request->all();
         $validator = Validator::make($data, [
             

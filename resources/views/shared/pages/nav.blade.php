@@ -27,6 +27,13 @@
                 </li>
 
                 <li class="nav-item"> 
+                    <a href="{{ route('po_received_category') }}" class="nav-link"> 
+                        <i class="nav-icon fa-solid fa fa-sitemap"></i>&nbsp;                       
+                        <span>P.O Received Category</span>
+                    </a> 
+                </li>
+
+                <li class="nav-item"> 
                     <a href="{{ route('sub_system_request_history') }}" class="nav-link"> 
                         <i class="nav-icon fa-solid fa-table-list"></i>&nbsp;                       
                         <span>View Request</span>

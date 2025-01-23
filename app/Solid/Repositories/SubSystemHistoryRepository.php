@@ -19,18 +19,25 @@ use App\Solid\Interfaces\SubSystemHistoryInterface;
  * Import Models
  */
 use App\Models\PoReceived;
+use App\Models\UserManagement;
 use App\Models\SubSystemHistoryLogs;
 use App\Models\SubSystemRequest;
 
 class SubSystemHistoryRepository implements SubSystemHistoryInterface
 {
     public function viewSubsystemRequestHistory(){
+        session_start();
+        $rapidx_user_id = $_SESSION['rapidx_user_id'];
+
         $view_subsystem_requests = SubSystemRequest::where('logdel', 0)->get();
+        $check_user = UserManagement::where('rapidx_user_id', $rapidx_user_id)->where('status', 0)->where('logdel', 0)->get();
 
         return DataTables::of($view_subsystem_requests)
-        ->addColumn('action', function($view_subsystem_request){
+        ->addColumn('action', function($view_subsystem_request) use($check_user){
             $result =  '<center>';
-            $result .= '<button type="button" class="btn btn-dark btn-sm text-center actionSubSystemRequestEdit button-hide d-none" subsystem_request-id="' . $view_subsystem_request->id . '" data-bs-toggle="modal" data-bs-target="#modalCreateUpdateSubSystemRequest" title="Edit Details"><i class="fa fa-edit"></i></button>&nbsp;';
+            if($check_user->isNotEmpty()){
+                $result .= '<button type="button" class="btn btn-dark btn-sm text-center actionSubSystemRequestEdit" subsystem_request-id="' . $view_subsystem_request->id . '" data-bs-toggle="modal" data-bs-target="#modalCreateUpdateSubSystemRequest" title="Edit Details"><i class="fa fa-edit"></i></button>&nbsp;';
+            }
             $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionViewPoReceivedDetails" subsystem_request-order_no="' . $view_subsystem_request->order_no . '" data-bs-toggle="modal" data-bs-target="#modalViewPoRevievedDetails" title="View Details"><i class="fa fa-eye"></i></button>&nbsp;';
             $result .= '</center>';
             return $result;
@@ -56,6 +63,7 @@ class SubSystemHistoryRepository implements SubSystemHistoryInterface
     }
 
     public function import($rapidx_name){
+        date_default_timezone_set('Asia/Manila');
         DB::beginTransaction();
         try{
             SubSystemRequest::whereNotNull('id')->delete(); 
@@ -105,6 +113,7 @@ class SubSystemHistoryRepository implements SubSystemHistoryInterface
     }
 
     public function subsystemRequestCreateUpdate($get_subsystem_request_id,$request, $rapidx_name){
+        date_default_timezone_set('Asia/Manila');
         $data = $request->all();
         $validator = Validator::make($data, [
 
@@ -113,8 +122,8 @@ class SubSystemHistoryRepository implements SubSystemHistoryInterface
         if ($validator->fails()) {
             return response()->json(['validationHasError' => 1, 'error' => $validator->messages()]);
         } else {
-            // DB::beginTransaction();
-            // try {
+            DB::beginTransaction();
+            try {
                 $check_batch_no = SubSystemHistoryLogs::orderBy('batch','desc')->distinct()->get('batch');
                 if($check_batch_no->isNotEmpty()){
                     $get_last_batch_no = $check_batch_no[0]->batch+1;
@@ -159,12 +168,12 @@ class SubSystemHistoryRepository implements SubSystemHistoryInterface
                     'material_cost' => $request->material_cost
                 ]);
 
-                // DB::commit();
+                DB::commit();
                 return response()->json(['hasError' => 0]);
-            // } catch (\Exception $e) {
-            //     DB::rollback();
-            //     return response()->json(['hasError' => 1, 'exceptionError' => $e->getMessage()]);
-            // }
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json(['hasError' => 1, 'exceptionError' => $e->getMessage()]);
+            }
         }
     }
 

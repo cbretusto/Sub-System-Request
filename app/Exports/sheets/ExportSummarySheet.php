@@ -26,18 +26,22 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
     use Exportable;
     protected $category;
     protected $group_by;
+    protected $po_received_category;
 
     function __construct(
         $category,
-        $group_by
+        $group_by,
+        $po_received_category
     ){
         $this->category = $category;
         $this->group_by = $group_by;
+        $this->po_received_category = $po_received_category;
     }
 
     public function view(): View {
         return view('exports.export_report', [
-            'group_by' => $this->group_by
+            'group_by' => $this->group_by,
+            'po_received_category' => $this->po_received_category
         ]);
     }
 
@@ -49,6 +53,7 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
     public function registerEvents(): array{
         $category = $this->category;
         $group_by = $this->group_by;
+        $po_received_category = $this->po_received_category;
 
         $border = [
             'borders' => [
@@ -114,6 +119,7 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
         $format_cell_custom_type_five = '_("$"* #,##0.00_);_("$"* (#,##0.00);_("$"* "-"??_);_(@_)';
 
         return[AfterSheet::class => function(AfterSheet $event) use(
+            $po_received_category, 
             $category, 
             $group_by, 
             $border, 
@@ -132,95 +138,95 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
             // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             // ->getStartColor()
             // ->setARGB('B7D8FF');
+            $excel = \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID;
+            $event->sheet
+                ->getDelegate()
+                ->getStyle('A4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FF99CC');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('A4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('FF99CC');
+                ->getDelegate()
+                ->getStyle('B4:C4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('B7D8FF');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('B4:C4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('B7D8FF');
+                ->getDelegate()
+                ->getStyle('D4:E4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFCC99');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('D4:E4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('FFCC99');
+                ->getDelegate()
+                ->getStyle('F3:L3')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFFF66');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('F3:L3')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('FFFF66');
+                ->getDelegate()
+                ->getStyle('F4:G4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('99FFFF');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('F4:G4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('99FFFF');
+                ->getDelegate()
+                ->getStyle('H4:I4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFCC99');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('H4:I4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('FFCC99');
+                ->getDelegate()
+                ->getStyle('J4:L4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FFFF66');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('J4:L4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('FFFF66');
+                ->getDelegate()
+                ->getStyle('M4:N4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('FF99CC');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('M4:N4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('FF99CC');
+                ->getDelegate()
+                ->getStyle('O4:P4')
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('CCFFCC');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('O4:P4')
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('CCFFCC');
+                ->getDelegate()
+                ->getStyle('A1')
+                ->applyFromArray($font_14_arial_bold)
+                ->applyFromArray($text_align_left)
+                ->getAlignment()
+                ->setWrapText(true);
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('A1')
-            ->applyFromArray($font_14_arial_bold)
-            ->applyFromArray($text_align_left)
-            ->getAlignment()
-            ->setWrapText(true);
-
-            $event->sheet
-            ->getDelegate()
-            ->getStyle('A3:P4')
-            ->applyFromArray($border)
-            ->applyFromArray($text_center)
-            ->applyFromArray($font_9_arial_bold)
-            ->getAlignment()
-            ->setWrapText(true);
+                ->getDelegate()
+                ->getStyle('A3:P4')
+                ->applyFromArray($border)
+                ->applyFromArray($text_center)
+                ->applyFromArray($font_9_arial_bold)
+                ->getAlignment()
+                ->setWrapText(true);
 
             $event->sheet->freezePane('B5');
             $event->sheet->getColumnDimension('A')->setWidth(15);
@@ -274,18 +280,17 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
 
             $start_column = 5;
             $columns = ['C', 'E', 'G', 'I', 'K', 'N', 'P'];
-            $po_received_category = [
-                'Burn-in Memory Sockets', 
-                'Burn-in Other Sockets', 
-                'Grinding Multip-Spindle', 
-                'Grinding Conventional', 
-                'Flexicon & TC/DC Connectors', 
-                'Card Connector', 
-                'FUS/FRS/FMS Connector', 
-                'CN171 Connector'
-            ];
+            // $po_received_category = [
+            //     'Burn-in Memory Sockets', 
+            //     'Burn-in Other Sockets', 
+            //     'Grinding Multip-Spindle', 
+            //     'Grinding Conventional', 
+            //     'Flexicon & TC/DC Connectors', 
+            //     'Card Connector', 
+            //     'FUS/FRS/FMS Connector', 
+            //     'CN171 Connector'
+            // ];
             
-
             for ($ii=0; $ii < count($po_received_category); $ii++) { 
                 $event->sheet
                     ->getDelegate()
@@ -303,14 +308,14 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
                     ->getAlignment()
                     ->setWrapText(true);
 
-                $event->sheet->setCellValue('A'.$start_column,$po_received_category[$ii]);
+                $event->sheet->setCellValue('A'.$start_column,$po_received_category[$ii]->category);
                 
                 for ($i=0; $i < count($group_by); $i++){
                     $event->sheet
                         ->getDelegate()
                         ->getStyle('J'.$start_column.':L'.$start_column)
                         ->getFill()
-                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->setFillType($excel)
                         ->getStartColor()
                         ->setARGB('FFFF66');
             
@@ -318,11 +323,11 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
                         ->getDelegate()
                         ->getStyle('M'.$start_column.':N'.$start_column)
                         ->getFill()
-                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->setFillType($excel)
                         ->getStartColor()
                         ->setARGB('FF99CC');
 
-                    if($po_received_category[$ii] == $group_by[$i]['category_name']){
+                    if($po_received_category[$ii]->category == $group_by[$i]['category_name']){
                         $event->sheet
                             ->getDelegate()
                             ->getStyle('B'.$start_column)
@@ -385,15 +390,15 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
             // ====================================================== OVER ALL SUM ======================================================
             // ==========================================================================================================================
             $last_row = $start_column;
-            $columns_to_sum = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
+            $columns_to_sum = range('B', 'P');
 
             $event->sheet
-            ->getDelegate()
-            ->getStyle('A'.$last_row.':P'.$last_row)
-            ->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()
-            ->setARGB('C0C0C0');
+                ->getDelegate()
+                ->getStyle('A'.$last_row.':P'.$last_row)
+                ->getFill()
+                ->setFillType($excel)
+                ->getStartColor()
+                ->setARGB('C0C0C0');
 
             foreach ($columns_to_sum as $column_total_sum) {
                 $event->sheet->setCellValue($column_total_sum . $last_row, "=SUM($column_total_sum" . '5' . ":" . $column_total_sum . ($last_row - 1) . ")");
@@ -422,7 +427,6 @@ class ExportSummarySheet implements FromView, ShouldAutoSize, WithEvents, WithTi
                 ->applyFromArray($font_9_arial_bold)
                 ->getAlignment()
                 ->setWrapText(true);
-
 
             $event->sheet->setCellValue('A' . $last_row, 'TOTAL:');
         }];

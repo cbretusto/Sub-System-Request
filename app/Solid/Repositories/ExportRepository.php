@@ -15,6 +15,7 @@ use App\Solid\Interfaces\ExportInterface;
 /**
  * Import Models
  */
+use App\Models\SubSystemPoReceivedCategory;
 use App\Models\SubSystemRequest;
 use App\Models\PoReceived;
 use App\Models\DieSet;
@@ -172,12 +173,13 @@ class ExportRepository implements ExportInterface
             ->values()
             ->toArray();
             
-            $qwe = DB::connection('mysql_rapid_pps')
-                ->table('tbl_POReceived')
-                ->where('logdel', '0')
-                ->select('tbl_POReceived.category')
-                ->groupBy('tbl_POReceived.category')
-                ->get();
+            $po_received_category = SubSystemPoReceivedCategory::where('status', 0)->where('logdel', 0)->get();
+            // $qwe = DB::connection('mysql_rapid_pps')
+            //     ->table('tbl_POReceived')
+            //     ->where('logdel', '0')
+            //     ->select('tbl_POReceived.category')
+            //     ->groupBy('tbl_POReceived.category')
+            //     ->get();
 
             // return $search_data_reports;
             // return $group_by[0]['category'];
@@ -185,7 +187,7 @@ class ExportRepository implements ExportInterface
             
         if(!empty($search_data_reports)){
             $title = 'Sub-System Request Report ( From '.date("Y-m-d ", strtotime($from)).' To '.date("Y-m-d ", strtotime($to)).' ).xlsx';
-            return Excel::download(new ExportData($search_data_reports,$category,$group_by),$title);
+            return Excel::download(new ExportData($search_data_reports,$category,$group_by,$po_received_category),$title);
         }else{
             return redirect()->back()->with('message', 'There are no data for the chosen date.');
         }

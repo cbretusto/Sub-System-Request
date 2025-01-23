@@ -27,20 +27,23 @@ class ExportData implements WithMultipleSheets
     protected $search_data_reports;
     protected $category;
     protected $group_by;
+    protected $po_received_category;
 
     function __construct(
         $search_data_reports,
         $category,
-        $group_by
+        $group_by,
+        $po_received_category
     ){
         $this->search_data_reports = $search_data_reports;
         $this->category = $category;
         $this->group_by = $group_by;
+        $this->po_received_category = $po_received_category;
     }
 
     public function sheets(): array{
         $sheets = [];
-        $sheets[] = new ExportSummarySheet($this->category, $this->group_by);
+        $sheets[] = new ExportSummarySheet($this->category, $this->group_by, $this->po_received_category);
         $sheets[] = new ExportDataSheet($this->search_data_reports, $this->category);
 
         return $sheets;

@@ -137,7 +137,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title"><i class="fas fa-info-circle"></i>&nbsp;Add Data</h4>
+                            <h4 class="modal-title"><i class="fas fa-info-circle"></i>&nbsp;Sub-System Request</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form class="form-hide" method="post" id="formCreateUpdateSubSystemRequest">
@@ -196,7 +196,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         
-                        <div class="card-body class-disabled p-3">
+                        <div class="card-body class-disabled p-4">
                             <div class="row">
                                 <div class="col-md-6 d-flex flex-column mb-3"> 
                                     <label for="" class="form-label"><strong>Category:</strong></label> 
@@ -283,7 +283,7 @@
                 dropdownAutoWidth: true,
                 dropdownParent: $('#modalCreateUpdateSubSystemRequest')
             })          
-            
+
             $('#modalCreateUpdateSubSystemRequest').on('shown.bs.modal', function () {
             });
             GetDeviceCode($('.get-item_code'),'3');
